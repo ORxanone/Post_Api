@@ -2,16 +2,18 @@
 const express = require('express');
 const crypto = require('crypto');
 const uniqid = require('uniqid');
+const jwt = require('jsonwebtoken');
+
 
 const router = express.Router();
-const SALT = crypto.randomBytes(32).toString('hex');
-
+const SALT = '12345';
+const SECRET_KEY = '12345';
 
 const users = [];
 
-router.get('/users', (req, res) => {
-    res.status(200).send(users);
-})
+// router.get('/users', (req, res) => {
+//     res.status(200).send(users);
+// })
 
 router.post('/registration', (req, res) => {
 
@@ -42,7 +44,12 @@ router.post('/login', (req, res) => {
     const user = users.find((user) => user.username === username && user.password === hashedPassword);
 
     if (user) {
-        res.status(200).send(user)
+        const { password, ...theRest } = user;
+        const accessToken = jwt.sign(theRest, SECRET_KEY);
+        res.status(200).send({
+
+            accessToken
+        })
     } else {
         res.status(401).send({ message: 'Username or password is wrong' });
     }
