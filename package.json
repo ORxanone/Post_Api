@@ -11,6 +11,7 @@
   "author": "Orkhan Racabli",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.3.9",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "uniqid": "^5.4.0"

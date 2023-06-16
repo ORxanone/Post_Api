@@ -1,19 +1,16 @@
 
 const express = require('express');
 const crypto = require('crypto');
+const config = require('config');
 const uniqid = require('uniqid');
 const jwt = require('jsonwebtoken');
+const auth = require("./middleware/auth")
+const users = require('./data.json').users;
+const SALT = config.get('SALT');
+const SECRET_KEY = config.get('SECRET_KEY');
 
 
 const router = express.Router();
-const SALT = '12345';
-const SECRET_KEY = '12345';
-
-const users = [];
-
-// router.get('/users', (req, res) => {
-//     res.status(200).send(users);
-// })
 
 router.post('/registration', (req, res) => {
 
@@ -47,7 +44,6 @@ router.post('/login', (req, res) => {
         const { password, ...theRest } = user;
         const accessToken = jwt.sign(theRest, SECRET_KEY);
         res.status(200).send({
-
             accessToken
         })
     } else {
@@ -59,4 +55,5 @@ router.post('/login', (req, res) => {
 
 
 module.exports = router;
+
 
